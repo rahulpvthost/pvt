@@ -83,7 +83,7 @@ if(req.headers.authorization && req.headers.authorization.startsWith('Bearer')){
         return next(new AppError('User recently changed password! Please log in again.',401));
     }
        req.user = currentUser;
-        res.locals.user = currentUser;
+        // res.locals.user = currentUser;
 
     next();
 });

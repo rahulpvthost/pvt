@@ -14,8 +14,8 @@ const postSchema = new mongoose.Schema({
         required:[true,'Post must belong to an author']
     },
     createdAt:{
-        type:Date,
-        default:Date.now()
+        type: Date,
+        default: Date.now
     },
     upvotes:{
         type:Number,
