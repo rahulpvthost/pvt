@@ -17,13 +17,13 @@ const postSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     },
-    upvotes:{
-        type:Number,
-        default:0
-    },
-    downvotes:{
-        type:Number,
-        default:0
-    }
+    upvotes:[{
+        type:mongoose.Schema.ObjectId,
+        ref:'User',
+    }],
+    downvotes:[{
+        type:mongoose.Schema.ObjectId,
+        ref:'User',
+    }]
 });
 module.exports = mongoose.model('Post', postSchema)

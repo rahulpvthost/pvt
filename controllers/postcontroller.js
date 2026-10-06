@@ -95,4 +95,61 @@ exports.updatePost = catchAsync(async (req, res, next) => {
     data: { post }
   });
 });
-    
+
+exports.upvote = catchAsync(async (req, res, next) => {
+
+  const doc = await Post.findById(req.params.id);
+
+  if (!doc) {
+    return next(new AppError('No post found with that ID', 404));
+  }
+
+  if (doc.upvotes.some(id => id.equals(req.user._id))) {
+    return next(new AppError(
+      'You have already upvoted this post',
+      400
+    ));
+  }
+
+  doc.downvotes = doc.downvotes.filter(
+    id => !id.equals(req.user._id)
+  );
+
+  doc.upvotes.push(req.user._id);
+
+  await doc.save();
+
+  res.status(200).json({
+    status: 'success',
+    data: { doc }
+  });
+});
+
+exports.downvote = catchAsync(async (req, res, next) => {
+
+  const doc = await Post.findById(req.params.id);
+
+  if (!doc) {
+    return next(new AppError('No post found with that ID', 404));
+  }
+
+  if (doc.downvotes.some(id => id.equals(req.user._id))) {
+    return next(new AppError(
+      'You have already downvoted this post',
+      400
+    ));
+  }
+
+  doc.upvotes = doc.upvotes.filter(
+    id => !id.equals(req.user._id)
+  );
+
+  doc.downvotes.push(req.user._id);
+
+  await doc.save();
+
+  res.status(200).json({
+    status: 'success',
+    data: { doc }
+  });
+});

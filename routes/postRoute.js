@@ -20,4 +20,10 @@ router.route('/')
     .delete(postController.deletePost)
     .patch(postController.updatePost);
 
+    router.route('/:id/upvote')
+    .patch(postController.upvote)
+    
+    router.route('/:id/downvote')
+    .patch(postController.downvote);
+
 module.exports = router;
