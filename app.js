@@ -4,6 +4,11 @@ const cookieParser = require('cookie-parser');
 const userrouter= require('./routes/userRoute');
 const postrouter= require('./routes/postRoute');
 
+
+const cors = require('cors');
+app.use(cors({ origin: 'http://localhost:5173' }));
+
+
  app.use(express.json());
 
  app.use(cookieParser());
