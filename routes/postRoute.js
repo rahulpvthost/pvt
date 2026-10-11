@@ -1,5 +1,5 @@
 const express= require('express');
-
+const upload = require('../utils/upload');
 const postController = require('../controllers/postcontroller');
 const authController = require('../controllers/authController');
 const router = express.Router();
@@ -12,7 +12,7 @@ router.route('/getmy')
     .get(postController.getMyPosts)
 
 router.route('/')
-    .post(postController.createpost)
+    .post(upload.single('image'),postController.createpost)
     .get(postController.getAllPosts);
 
     router.route('/:id')

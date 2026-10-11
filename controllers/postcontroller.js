@@ -1,18 +1,42 @@
 const Post = require('../models/post');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
+const cloudinary = require('../utils/cloudinary');
+
 
 exports.createpost = catchAsync(async (req, res, next) => {
+  let image = '';
+
+  if (req.file) {
+    const result = await new Promise((resolve, reject) => {
+      const stream = cloudinary.uploader.upload_stream(
+        { folder: 'pvt/posts', resource_type: 'image' },
+        (error, result) => {
+          if (error) return reject(error);
+          resolve(result);
+        }
+      );
+
+      stream.end(req.file.buffer);
+    });
+
+    image = result.secure_url;
+  }
+   
+
   const doc = await Post.create({
-    
-    title:req.body.title,
-    content:req.body.content,   
-    author:req.user.id});
+ 
+    title: req.body.title,
+    content: req.body.content,
+    author: req.user.id,
+    image: image
+  });
+
   res.status(201).json({
     status: 'success',
     data: {
-      data: doc,
-    },
+      data: doc
+    }
   });
 });
 

@@ -7,6 +7,7 @@ import{api} from '../api';
 
 
 function Home({ user, onLogout }) {
+  const [image, setImage] = useState(null);
 
   const [posts, setPosts] = useState([]);
  useEffect(() => {
@@ -17,6 +18,7 @@ function Home({ user, onLogout }) {
         author: p.author ? p.author.name : "unknown",
         title: p.title,
         content: p.content,
+        image: p.image || "",
         time: new Date(p.createdAt).toLocaleString(),
         upvotes: p.upvotes.length,
         downvotes: p.downvotes.length,
@@ -32,31 +34,41 @@ function Home({ user, onLogout }) {
 
    async function createPost() {
 
-    if (!title || !content) {
+    if (!title.trim() || !content.trim()) {
       return;
     }
 
 
     try {
-      const data = await api('/posts','POST',{
-        title,
-        content
-      });
+      const formData = new FormData();
+      formData.append('title', title);
+      formData.append('content', content);
+
+      if (image) {
+      formData.append("image", image);
+    }
+
+      const data = await api('/posts','POST', formData);
+      const savedPost = data.data.data;
+
       const newPost = {
-        id: data.data.data._id,
+
+        id: savedPost._id,
       author: user,
-      title: title,
-      content: content,
+      title: savedPost.title,
+      content: savedPost.content,
+      image:savedPost.image ||"",
       time: "Just now",
-      upvotes: 0,
-      downvotes: 0,
+      upvotes: savedPost.upvotes.length,
+      downvotes: savedPost.downvotes.length,
       comments: 0
     };
 
-    setPosts([newPost, ...posts]);
+     setPosts((prev) => [newPost, ...prev]);
 
     setTitle("");
     setContent("");
+     setImage(null);
   }catch (err) {
     console.error(err.message);
   }
@@ -128,6 +140,12 @@ function Home({ user, onLogout }) {
         <main className="feed">
 
           <div className="create-box">
+
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => setImage(e.target.files[0] || null)}
+              />
 
             <h2>Create Post</h2>
 

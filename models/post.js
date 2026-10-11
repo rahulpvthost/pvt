@@ -28,6 +28,14 @@ const postSchema = new mongoose.Schema({
     comments:[{
         type:mongoose.Schema.ObjectId,
         ref:'Comment',
-    }]
+    }],
+    photos:[{
+        type:mongoose.Schema.ObjectId,
+        ref:'Photo',
+    }],
+    image: {
+    type: String,
+    default: ''
+}
 });
 module.exports = mongoose.model('Post', postSchema)
