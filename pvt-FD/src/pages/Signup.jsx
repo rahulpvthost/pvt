@@ -30,7 +30,7 @@ function Signup({ onSignup, goToLogin }) {
 
       <div className="auth-box">
 
-        <h1>PVT</h1>
+        <h1 className="log">PVT</h1>
         <p>Create your account</p>
 
         <form onSubmit={handleSubmit}>

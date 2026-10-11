@@ -26,7 +26,7 @@ function Login({ onLogin, goToSignup }) {
     <div className="auth-page">
       <div className="auth-box">
 
-        <h1>PVT</h1>
+        <h1 className ="log">PVT</h1>
         <p>Welcome back</p>
 
         <form onSubmit={handleSubmit}>

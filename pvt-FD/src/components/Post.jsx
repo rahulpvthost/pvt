@@ -14,6 +14,7 @@ function Post({ post, onUpvote, onDownvote }) {
       <h2>{post.title}</h2>
 
       <p>{post.content}</p>
+      
       {post.image && (
         <img
           src={post.image}
